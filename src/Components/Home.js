@@ -2,9 +2,8 @@ import misticCredentials from '../credentials';
 
 import React, { useEffect, useState } from 'react';
 import { getAuth, signOut } from 'firebase/auth';
-import {getFirestore, collection, addDoc, getDocs, doc, deleteDoc, getDoc} from 'firebase/firestore'
+import {getFirestore, collection, addDoc, getDocs, doc, deleteDoc, getDoc, setDoc} from 'firebase/firestore'
 import {Metronome} from '@uiball/loaders'
-import { async } from '@firebase/util';
 
 
 const auth = getAuth(misticCredentials);
@@ -34,20 +33,29 @@ const Home = ({userEmail}) => {
         setUser({...user, [name]:value})
     }
 
-    //funcion para cargar datos en la DB
+    //funcion para actualizar o cargar datos en la DB
 
     const saveData = async(e) => {
         e.preventDefault();
         setLoading(true);
-        try {
-            await addDoc(collection(db, 'clientes'), {
+
+        if(subId=== ''){
+            try {
+                await addDoc(collection(db, 'clientes'), {
+                    ...user
+                })
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        else{
+            await setDoc(doc(db, 'clientes', subId),{
                 ...user
             })
-        } catch (error) {
-            console.log(error);
         }
         setLoading(false);
         setUser({...dataRecords})
+        setSubId('')
     }
 
     //funcion para traer datos de la DB
@@ -144,7 +152,7 @@ const Home = ({userEmail}) => {
                             </div>
 
                             <button className='btn btn-success'>
-                            Insertar registro
+                                {subId === '' ? 'Insertar registro':'Actualizar'}
                             </button>
 
                         </div>
