@@ -1,14 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import misticCredentials from '../credentials';
 import { getAuth, signOut } from 'firebase/auth';
+import {getFirestore, collection, addDoc, getDocs, doc, deleteDoc, getDoc} from 'firebase/firestore'
 
 const auth = getAuth(misticCredentials);
+const db = getFirestore (misticCredentials);
 
 const Home = ({userEmail}) => {
     if (userEmail==='joaquinpecas@adinet.com.uy'){
         userEmail='Joaco'
     }
+
+    const dataRecords = {
+        nombre: '',
+        apellido: '',
+        telefono: '',
+        email: '',
+        servicio: '',
+        fecha: ''
+    }
+
+    const [user, setUser] = useState(dataRecords);
+
+    const inputsValues = (e) => {
+        const {name, value} = e.target;
+        setUser({...user, [name]:value})
+    }
+
+    const saveData = async(e) => {
+        e.preventDefault();
+        try {
+            await addDoc(collection(db, 'clientes'))
+        } catch (error) {
+            console.log(error);
+        }
+        setUser({...dataRecords})
+    }
+
     return (
         <div className='container mt-4 vh-100 p-5'>
             <div className='row'>
@@ -27,15 +56,23 @@ const Home = ({userEmail}) => {
             <div className='row'>
                 
                 <div className='col-md-4'>
-                    <h3>Ingresar registro</h3>
-                    <form>
+                    <h3 className='text-center'>Ingresar registro</h3>
+                    <form onSubmit={saveData}>
                         <div className='card card-body'>
                             <div className='d-grid form-group p-1 gap-2'>
-                                <input type="text" name='nombre' className='form-control' placeholder='Nombre'/>
-                                <input type="text" name='apellido' className='form-control' placeholder='Apellido'/>
-                                <input type="text" name="celular" placeholder='Teléfono'className='form-control'/>
-                                <input type="email" name='email' placeholder='Email'  className='form-control'/>
-                                <textarea type="text" name='notas' placeholder='Notas' className='form-control'/>
+
+                                <input type="text" name='nombre' className='form-control' placeholder='Nombre' onChange={inputsValues} value={user.nombre}/>
+
+                                <input type="text" name='apellido' className='form-control' placeholder='Apellido' onChange={inputsValues} value={user.apellido}/>
+
+                                <input type="text" name="telefono" placeholder='Teléfono'className='form-control' onChange={inputsValues} value={user.telefono}/>
+
+                                <input type="email" name='email' placeholder='Email'  className='form-control' onChange={inputsValues} value={user.email}/>
+
+                                <textarea type="text" name='servicio' placeholder='Servicio' className='form-control' onChange={inputsValues} value={user.servicio}/>
+
+                                <input type="datetime-local" name='fecha' onChange={inputsValues} value={user.fecha} />
+
                             </div>
 
                             <button className='btn btn-success'>
@@ -46,8 +83,8 @@ const Home = ({userEmail}) => {
                     </form>
                 </div>
 
-                <div className='col-md-8'>
-                <h4>Registro de clientes</h4>
+                <div className='col-md-8 mt-1 overflow-auto'>
+                <h4 className='text-center'>Registro de clientes</h4>
 
                 <table className='table table-dark table-striped'>
 

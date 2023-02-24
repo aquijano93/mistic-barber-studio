@@ -25,7 +25,7 @@ const Login = () => {
     }
 
     return (
-        <div className='row container p-4'>
+        <div className='row container mx-auto p-4'>
 
             <div className='col-md-8'>
 
@@ -53,7 +53,7 @@ const Login = () => {
             {/* form goes here*/ }
             <div className='col-md-4'>
 
-                <div className='mt-5 ms-5'>
+                <div className='mt-5 ms-3'>
                     <h1>{record ? 'Registrarse' : 'Iniciar sesión'}</h1>
                     <form onSubmit={handlerSubmit}>
 
@@ -67,14 +67,14 @@ const Login = () => {
                             <input type="password" className='form-control' placeholder='Ingresar contraseña, min 8 caractéres.' id='password' required/>
                         </div>
 
-                        <button className='btn btn-primary' type='submit'>
+                        <button className='btn btn-primary col-sm-12' type='submit'>
                             {record ? 'Registrar cuenta' : 'Iniciar sesión'}
                         </button>
 
                         </form>
 
-                        <div className='form-group'>
-                            <button className='btn btn-secondary mt-4 form-control' onClick={()=> setRecord(!record)}>
+                        <div className='form-group col-sm-12'>
+                            <button className='btn btn-outline-secondary mt-4 form-control' onClick={()=> setRecord(!record)}>
                                 {record ? 'Iniciar sesión' : 'Registrarse'}
                             </button>
                         </div>

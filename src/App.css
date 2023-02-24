@@ -2,7 +2,7 @@ body{
   background-color: rgb(24, 23, 23);
 }
 
-h1,h2,h3,h4,p{
+h1,h2,h3,h4,p,label,hr {
   color: blanchedalmond;
 }
 

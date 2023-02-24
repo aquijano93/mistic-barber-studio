@@ -1,10 +1,11 @@
-import { useState } from 'react';
 import './App.css';
 import Home from './Components/Home';
 import Login from './Components/Login';
-
 import misticCredentials from './credentials'
+import { useState } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+
+
 const auth = getAuth(misticCredentials)
 
 function App() {
